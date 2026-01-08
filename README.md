@@ -15,7 +15,7 @@ pip install whisperx
 Use:
 
 ```bash
-#source .venv/bin/activate  # If needed: re-activate the virtual environment if needed
+#source .venv/bin/activate  # If needed: activate the virtual environment
 .venv/bin/whisperx sample.mp3
 ```
 
@@ -35,7 +35,7 @@ To fix this, force the compute type:
 
 Based on your `python`/`pytorch` version, you may receive the error:
 
-> raise pickle.UnpicklingError(_get_wo_message(str(e)))
+> raise pickle.UnpicklingError
 
 To fix this:
 
