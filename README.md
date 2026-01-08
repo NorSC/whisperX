@@ -7,21 +7,16 @@ Repository: [github.com/m-bain/whisperX](https://github.com/m-bain/whisperX).
 Install:
 
 ```bash
-python3 -m venv .venv  # Tested with Python 3.13.7
-source .venv/bin/activate
-pip install whisperx
+python3 -m venv .venv      # Tested with: Python 3.13.7
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install whisperx       # Tested with: whisperx==3.7.4
 ```
 
-Use:
+Use (if required, re-activate the virtual environment as above):
 
 ```bash
-#source .venv/bin/activate  # If needed: activate the virtual environment
 .venv/bin/whisperx sample.mp3
 ```
-
-<!--
-python .venv/lib/python3.13/site-packages/whisperx
--->
 
 On macOS you may receive:
 
@@ -37,13 +32,13 @@ Based on your `python`/`pytorch` version, you may receive the error:
 
 > raise pickle.UnpicklingError
 
-To fix this:
+To fix this, insert an initial call to `torch.serialization.add_safe_globals()`, listing every type that is deserialized from the model:
 
 ```bash
 python -c "import torch; import omegaconf; import typing; import collections; import pyannote.audio; torch.serialization.add_safe_globals([omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, typing.Any, list, collections.defaultdict, dict, int, omegaconf.nodes.AnyNode, omegaconf.base.Metadata, torch.torch_version.TorchVersion, pyannote.audio.core.model.Introspection, pyannote.audio.core.task.Specifications, pyannote.audio.core.task.Problem, pyannote.audio.core.task.Resolution]); from whisperx.__main__ import cli; cli()" sample.mp3
 ```
 
-(You may need to add `--compute_type float32` on macOS).
+On macOS, remember to add: `--compute_type float32`
 
 For other command-line options, see: [Usage - command line](https://github.com/m-bain/whisperX?tab=readme-ov-file#usage--command-line).
 
