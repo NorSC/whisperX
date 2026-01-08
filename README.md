@@ -1,3 +1,56 @@
+<!-- spell-checker:ignore whisperx venv Unpickling omegaconf pyannote omegaconf defaultdict listconfig pyannote -->
+
+# Notes on running *WhisperX*
+
+Repository: [github.com/m-bain/whisperX](https://github.com/m-bain/whisperX).
+
+Install:
+
+```bash
+python3 -m venv .venv  # Tested with Python 3.13.7
+source .venv/bin/activate
+pip install whisperx
+```
+
+Use:
+
+```bash
+#source .venv/bin/activate  # If needed: re-activate the virtual environment if needed
+.venv/bin/whisperx sample.mp3
+```
+
+<!--
+python .venv/lib/python3.13/site-packages/whisperx
+-->
+
+On macOS you may receive:
+
+> ValueError: Requested float16 compute type, but the target device or backend do not support efficient float16 computation.
+
+To fix this, force the compute type:
+
+```bash
+.venv/bin/whisperx --compute_type float32 sample.mp3
+```
+
+Based on your `python`/`pytorch` version, you may receive the error:
+
+> raise pickle.UnpicklingError(_get_wo_message(str(e)))
+
+To fix this:
+
+```bash
+python -c "import torch; import omegaconf; import typing; import collections; import pyannote.audio; torch.serialization.add_safe_globals([omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, typing.Any, list, collections.defaultdict, dict, int, omegaconf.nodes.AnyNode, omegaconf.base.Metadata, torch.torch_version.TorchVersion, pyannote.audio.core.model.Introspection, pyannote.audio.core.task.Specifications, pyannote.audio.core.task.Problem, pyannote.audio.core.task.Resolution]); from whisperx.__main__ import cli; cli()" sample.mp3
+```
+
+(You may need to add `--compute_type float32` on macOS).
+
+For other command-line options, see: [Usage - command line](https://github.com/m-bain/whisperX?tab=readme-ov-file#usage--command-line).
+
+---
+*(Original `README.md` follows)*
+---
+
 <h1 align="center">WhisperX</h1>
 
 ## Recall.ai - Meeting Transcription API
